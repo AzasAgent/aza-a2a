@@ -1,0 +1,14 @@
+services:
+  - type: web
+    name: aza-a2a
+    env: python
+    region: frankfurt
+    plan: free
+    branch: master
+    buildCommand: pip install -r requirements.txt
+    startCommand: python server.py
+    envVars:
+      - key: PYTHON_VERSION
+        value: 3.12.0
+      - key: PORT
+        generateValue: true
