@@ -360,6 +360,12 @@ async def health_check(request: Request) -> JSONResponse:
     })
 
 
+async def agent_card_endpoint(request: Request) -> JSONResponse:
+    """Serve the Agent Card at the new canonical endpoint."""
+    agent_card = build_agent_card()
+    return JSONResponse(agent_card.model_dump(exclude_none=True))
+
+
 def create_app():
     """Create the Starlette ASGI application."""
     agent_card = build_agent_card()
@@ -380,6 +386,7 @@ def create_app():
     # Add human-friendly GET routes alongside the A2A POST routes
     app.routes.insert(0, Route("/", landing_page, methods=["GET"]))
     app.routes.insert(1, Route("/health", health_check, methods=["GET"]))
+    app.routes.insert(2, Route("/.well-known/agent-card.json", agent_card_endpoint, methods=["GET"]))
 
     return app
 
